@@ -1,8 +1,8 @@
 
-.idea
-*.iml
 build
 target
-
+build/
+.idea/
 .gradle
+*.iml
 local.properties
