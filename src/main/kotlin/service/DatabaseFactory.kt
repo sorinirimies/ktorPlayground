@@ -12,22 +12,24 @@ object DatabaseFactory {
 
     private val dispatcher: CoroutineContext
 
+    private val hikari by lazy {
+        HikariDataSource(HikariConfig().apply {
+            driverClassName = "org.h2.Driver"
+            jdbcUrl = "jdbc:h2:mem:test"
+            maximumPoolSize = 3
+            isAutoCommit = false
+            transactionIsolation = "TRANSACTION_REPEATABLE_READ"
+            validate()
+        })
+    }
+
     init {
         dispatcher = newFixedThreadPoolContext(5, "database-pool")
     }
 
     fun init() {
-        Database.connect(hikari())
+        Database.connect(hikari)
     }
-
-    private fun hikari() = HikariDataSource(HikariConfig().apply {
-        driverClassName = "org.h2.Driver"
-        jdbcUrl = "jdbc:h2:mem:test"
-        maximumPoolSize = 3
-        isAutoCommit = false
-        transactionIsolation = "TRANSACTION_REPEATABLE_READ"
-        validate()
-    })
 
     suspend fun <T> dbQuery(block: () -> T): T = withContext(dispatcher) {
         transaction { block() }
