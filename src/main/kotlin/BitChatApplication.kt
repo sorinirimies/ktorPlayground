@@ -45,7 +45,6 @@ fun Application.module() {
     }
 
     routing {
-
         route("/users") {
             get {
                 call.respond(userList)
