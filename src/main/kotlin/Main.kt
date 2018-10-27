@@ -1,37 +1,32 @@
-import com.fasterxml.jackson.annotation.JsonInclude
-import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.SerializationFeature
-import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import io.ktor.application.Application
 import io.ktor.application.install
 import io.ktor.features.CallLogging
 import io.ktor.features.ContentNegotiation
 import io.ktor.features.DefaultHeaders
-import io.ktor.http.ContentType
-import io.ktor.jackson.JacksonConverter
 import io.ktor.jackson.jackson
 import io.ktor.routing.Routing
-import model.User
+import io.ktor.server.engine.embeddedServer
+import io.ktor.server.netty.Netty
+import io.ktor.websocket.WebSockets
+import org.slf4j.LoggerFactory
 import service.DatabaseFactory
 import service.MessageService
 import service.UserService
-import java.text.DateFormat
+
+val LOG = LoggerFactory.getLogger("ktor-server")
 
 fun Application.module() {
     LOG.debug("Starting BitChat Server!")
     install(CallLogging)
     install(DefaultHeaders)
+    install(WebSockets)
     install(ContentNegotiation) {
         jackson {
             configure(SerializationFeature.INDENT_OUTPUT, true)
-            enable(SerializationFeature.INDENT_OUTPUT)
-            dateFormat = DateFormat.getDateInstance()
-            disableDefaultTyping()
-            register(ContentType.Application.Json, JacksonConverter(ObjectMapper().apply {
-                User::class.java
-            }))
         }
     }
+
     DatabaseFactory.init()
     install(Routing) {
         users(UserService())
@@ -39,6 +34,8 @@ fun Application.module() {
     }
 }
 
-val mapper = jacksonObjectMapper().apply {
-    setSerializationInclusion(JsonInclude.Include.NON_NULL)
+fun main(args: Array<String>) {
+    LOG.debug("Starting server ...")
+    val server = embeddedServer(Netty, 9596, module = Application::module).start(wait = true)
+    server.start(true)
 }

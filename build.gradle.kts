@@ -15,9 +15,9 @@ plugins {
 repositories {
     mavenCentral()
     jcenter()
-    maven { url = uri("https://dl.bintray.com/kotlin/exposed") }
-    maven { url = uri("https://dl.bintray.com/kotlin/ktor") }
     maven { url = uri("https://dl.bintray.com/kotlin/kotlinx") }
+    maven { url = uri("https://dl.bintray.com/kotlin/ktor") }
+    maven { url = uri("https://dl.bintray.com/kotlin/exposed") }
 }
 
 tasks.withType<KotlinCompile> { kotlinOptions.jvmTarget = "1.8" }
@@ -26,12 +26,18 @@ kotlin { experimental.coroutines = Coroutines.ENABLE }
 
 dependencies {
     compile(kotlin("stdlib-jdk8"))
-    compile("ch.qos.logback:logback-classic:1.2.3")
+
     compile("io.ktor:ktor-server-netty:$ktor_version")
     compile("io.ktor:ktor-jackson:$ktor_version")
+    compile("io.ktor:ktor-websockets:$ktor_version")
     compile("io.ktor:ktor-auth-jwt:$ktor_version")
+
+    compile ("com.h2database:h2:$h2_version")
     compile("org.jetbrains.exposed:exposed:$exposed_version")
     compile("com.zaxxer:HikariCP:3.2.0")
+
+    compile("ch.qos.logback:logback-classic:1.2.3")
+
     testCompile("io.ktor:ktor-server-test-host:$ktor_version")
     testCompile("org.junit.jupiter:junit-jupiter-api:5.2.0")
     testCompile("org.assertj:assertj-core:3.10.0")

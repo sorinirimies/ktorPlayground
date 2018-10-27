@@ -1,5 +1,8 @@
 package service
 
+import com.fasterxml.jackson.annotation.JsonInclude
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import io.ktor.http.cio.websocket.Frame
 import model.ChangeType
 import model.DbUpdater
 import model.User
@@ -69,5 +72,4 @@ class UserService {
     suspend fun deleteUser(id: Int): Boolean = dbQuery {
         Users.deleteWhere { Users.id eq id } > 0
     }
-
 }
