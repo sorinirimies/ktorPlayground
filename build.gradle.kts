@@ -1,3 +1,4 @@
+import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import org.jetbrains.kotlin.gradle.dsl.Coroutines
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
@@ -6,10 +7,22 @@ val exposed_version = "0.10.5"
 val h2_version = "1.4.196"
 
 group = "com.ktor.finance"
-version = "1.0-SNAPSHOT"
+version = "0.0.1"
 
 plugins {
+    application
     kotlin("jvm") version "1.2.71"
+    id("com.github.johnrengelman.shadow") version "2.0.1"
+}
+application {
+    mainClassName = "com.ktor.finance.Main"
+}
+
+/* JAR packaging */
+val shadowJar: ShadowJar by tasks
+shadowJar.apply {
+    baseName = "finance-server"
+    version = version
 }
 
 repositories {
@@ -18,6 +31,7 @@ repositories {
     maven { url = uri("https://dl.bintray.com/kotlin/kotlinx") }
     maven { url = uri("https://dl.bintray.com/kotlin/ktor") }
     maven { url = uri("https://dl.bintray.com/kotlin/exposed") }
+    maven { url = uri("https://plugins.gradle.org/m2/") }
 }
 
 tasks.withType<KotlinCompile> { kotlinOptions.jvmTarget = "1.8" }
@@ -32,7 +46,7 @@ dependencies {
     compile("io.ktor:ktor-websockets:$ktor_version")
     compile("io.ktor:ktor-auth-jwt:$ktor_version")
 
-    compile ("com.h2database:h2:$h2_version")
+    compile("com.h2database:h2:$h2_version")
     compile("org.jetbrains.exposed:exposed:$exposed_version")
     compile("com.zaxxer:HikariCP:3.2.0")
 
@@ -44,3 +58,4 @@ dependencies {
     testCompile("io.rest-assured:rest-assured:3.1.0")
     testCompile(group = "junit", name = "junit", version = "4.12")
 }
+
