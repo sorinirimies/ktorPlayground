@@ -36,8 +36,6 @@ repositories {
 
 tasks.withType<KotlinCompile> { kotlinOptions.jvmTarget = "1.8" }
 
-kotlin { experimental.coroutines = Coroutines.ENABLE }
-
 dependencies {
     compile(kotlin("stdlib-jdk8"))
 
