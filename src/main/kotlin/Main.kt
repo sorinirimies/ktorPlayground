@@ -14,19 +14,14 @@ import service.DatabaseFactory
 import service.MessageService
 import service.UserService
 
-val LOG = LoggerFactory.getLogger("ktor-server")
+val LOG = LoggerFactory.getLogger("finance-server")
 
 fun Application.module() {
     LOG.debug("Starting BitChat Server!")
     install(CallLogging)
     install(DefaultHeaders)
     install(WebSockets)
-    install(ContentNegotiation) {
-        jackson {
-            configure(SerializationFeature.INDENT_OUTPUT, true)
-        }
-    }
-
+    install(ContentNegotiation) { jackson { configure(SerializationFeature.INDENT_OUTPUT, true) } }
     DatabaseFactory.init()
     install(Routing) {
         users(UserService())
