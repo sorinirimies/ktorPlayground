@@ -1,14 +1,10 @@
 package service
 
-import com.fasterxml.jackson.annotation.JsonInclude
-import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
-import io.ktor.http.cio.websocket.Frame
 import model.ChangeType
 import model.DbUpdater
 import model.User
 import model.Users
 import org.jetbrains.exposed.sql.*
-import service.DatabaseFactory.dbQuery
 
 class UserService {
 

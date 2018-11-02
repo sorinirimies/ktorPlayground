@@ -7,12 +7,13 @@ import io.ktor.request.receive
 import io.ktor.response.respond
 import io.ktor.routing.*
 import io.ktor.websocket.webSocket
+import kotlinx.coroutines.channels.consumeEach
 import model.Message
 import model.User
-import service.MessageService
-import service.UserService
+import service.MessageApi
+import service.UserApi
 
-fun Route.users(userService: UserService) {
+fun Route.users(userService: UserApi) {
     route("/users") {
 
         get("/") { call.respond(userService.getAllUsers()) }
@@ -44,16 +45,15 @@ fun Route.users(userService: UserService) {
             userService.addChangeListener(this.hashCode()) {
                 outgoing.send(Frame.Text(mapper.writeValueAsString(it)))
             }
-            while (true) {
-                incoming.receiveOrNull() ?: break
-            }
+            incoming.consumeEach { }
+
         } finally {
             userService.removeChangeListener(this.hashCode())
         }
     }
 }
 
-fun Route.messages(messageService: MessageService) {
+fun Route.messages(messageService: MessageApi) {
     route("/messages") {
 
         get("/") { call.respond(messageService.getAllMessages()) }
