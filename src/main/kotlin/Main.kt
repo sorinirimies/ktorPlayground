@@ -9,33 +9,28 @@ import io.ktor.routing.Routing
 import io.ktor.server.engine.embeddedServer
 import io.ktor.server.netty.Netty
 import io.ktor.websocket.WebSockets
-import org.slf4j.LoggerFactory
-import service.DatabaseFactory
 import service.MessageService
 import service.UserService
-
-val LOG = LoggerFactory.getLogger("ktor-server")
+import service.messages
+import service.users
+import util.Log
+import util.initExposedDb
 
 fun Application.module() {
-    LOG.debug("Starting BitChat Server!")
+    Log().debug("Starting BitChat Server!")
     install(CallLogging)
     install(DefaultHeaders)
     install(WebSockets)
-    install(ContentNegotiation) {
-        jackson {
-            configure(SerializationFeature.INDENT_OUTPUT, true)
-        }
-    }
-
-    DatabaseFactory.init()
+    install(ContentNegotiation) { jackson { configure(SerializationFeature.INDENT_OUTPUT, true) } }
     install(Routing) {
         users(UserService())
         messages(MessageService())
     }
+    initExposedDb()
 }
 
 fun main(args: Array<String>) {
-    LOG.debug("Starting server ...")
+    Log().debug("Starting server ...")
     val server = embeddedServer(Netty, 9596, module = Application::module).start(wait = true)
     server.start(true)
 }

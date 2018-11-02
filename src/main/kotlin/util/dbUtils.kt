@@ -1,4 +1,4 @@
-package service
+package util
 
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
@@ -10,6 +10,7 @@ import org.jetbrains.exposed.sql.addLogger
 import org.jetbrains.exposed.sql.transactions.transaction
 
 fun initExposedDb() {
+    Log().debug("Connecting to DB...")
     Database.connect(hikari).also {
         transaction {
             addLogger(StdOutSqlLogger)
@@ -17,7 +18,7 @@ fun initExposedDb() {
     }
 }
 
-private val hikari by lazy {
+private val hikari by lazy(LazyThreadSafetyMode.NONE) {
     HikariDataSource(HikariConfig().apply {
         driverClassName = "org.h2.Driver"
         jdbcUrl = "jdbc:h2:mem:test"

@@ -1,3 +1,5 @@
+package service
+
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import io.ktor.application.call
@@ -10,11 +12,9 @@ import io.ktor.websocket.webSocket
 import kotlinx.coroutines.channels.consumeEach
 import model.Message
 import model.User
-import service.MessageApi
-import service.UserApi
 
 fun Route.users(userService: UserApi) {
-    route("/users") {
+    route("/service.users") {
 
         get("/") { call.respond(userService.getAllUsers()) }
 
@@ -45,8 +45,9 @@ fun Route.users(userService: UserApi) {
             userService.addChangeListener(this.hashCode()) {
                 outgoing.send(Frame.Text(mapper.writeValueAsString(it)))
             }
-            incoming.consumeEach { }
-
+            while (true) {
+                incoming.receiveOrNull() ?: break
+            }
         } finally {
             userService.removeChangeListener(this.hashCode())
         }
@@ -54,7 +55,7 @@ fun Route.users(userService: UserApi) {
 }
 
 fun Route.messages(messageService: MessageApi) {
-    route("/messages") {
+    route("/service.messages") {
 
         get("/") { call.respond(messageService.getAllMessages()) }
 
