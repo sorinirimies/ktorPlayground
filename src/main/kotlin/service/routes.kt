@@ -14,7 +14,7 @@ import model.Message
 import model.User
 
 fun Route.users(userService: UserApi) {
-    route("/service.users") {
+    route("/users") {
 
         get("/") { call.respond(userService.getAllUsers()) }
 
@@ -55,7 +55,7 @@ fun Route.users(userService: UserApi) {
 }
 
 fun Route.messages(messageService: MessageApi) {
-    route("/service.messages") {
+    route("/messages") {
 
         get("/") { call.respond(messageService.getAllMessages()) }
 

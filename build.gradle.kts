@@ -3,7 +3,7 @@ import org.jetbrains.kotlin.gradle.dsl.Coroutines
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 val ktor_version = "1.0.0-beta-3"
-val exposed_version = "0.11.1"
+val exposed_version = "0.11.2"
 val h2_version = "1.4.196"
 
 group = "com.ktor.finance"
