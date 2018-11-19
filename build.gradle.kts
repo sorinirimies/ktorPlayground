@@ -20,7 +20,7 @@ plugins {
 
 tasks.withType<KotlinCompile> { kotlinOptions.jvmTarget = "1.8" }
 
-val ktor_version = "1.0.0-beta-3"
+val ktor_version = "1.0.0"
 val exposed_version = "0.11.2"
 val h2_version = "1.4.196"
 
