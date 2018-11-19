@@ -1,29 +1,7 @@
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
+import org.jetbrains.kotlin.cli.jvm.main
 import org.jetbrains.kotlin.gradle.dsl.Coroutines
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-
-val ktor_version = "1.0.0-beta-3"
-val exposed_version = "0.11.2"
-val h2_version = "1.4.196"
-
-group = "com.ktor.finance"
-version = "0.0.1"
-
-plugins {
-  application
-  kotlin("jvm") version "1.3.10"
-  id("com.github.johnrengelman.shadow") version "2.0.4"
-}
-application {
-  mainClassName = "com.ktor.finance.Main"
-}
-
-/* JAR packaging */
-val shadowJar: ShadowJar by tasks
-shadowJar.apply {
-  baseName = "finance-server"
-  version = version
-}
 
 repositories {
   mavenCentral()
@@ -34,7 +12,32 @@ repositories {
   maven { url = uri("https://plugins.gradle.org/m2/") }
 }
 
+plugins {
+  application
+  kotlin("jvm") version "1.3.10"
+  id("com.github.johnrengelman.shadow") version "4.0.2"
+}
+
 tasks.withType<KotlinCompile> { kotlinOptions.jvmTarget = "1.8" }
+
+val ktor_version = "1.0.0-beta-3"
+val exposed_version = "0.11.2"
+val h2_version = "1.4.196"
+
+group = "com.ktor.finance"
+version = "0.0.1"
+
+application {
+  mainClassName = "com.ktor.finance.MainKt"
+}
+
+/* jar packaging */
+val shadowJar: ShadowJar by tasks
+shadowJar.apply {
+  baseName = "ktorfinance"
+  version = version
+  classifier = ""
+}
 
 dependencies {
   implementation(kotlin("stdlib-jdk8"))
