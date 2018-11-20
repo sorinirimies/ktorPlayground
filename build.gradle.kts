@@ -31,8 +31,8 @@ application {
 val shadowJar: ShadowJar by tasks
 shadowJar.apply {
   baseName = "ktorfinance"
-  version = version
   classifier = ""
+  version = ""
 }
 
 val ktorVersion = "1.0.0"
