@@ -20,10 +20,6 @@ plugins {
 
 tasks.withType<KotlinCompile> { kotlinOptions.jvmTarget = "1.8" }
 
-val ktor_version = "1.0.0"
-val exposed_version = "0.11.2"
-val h2_version = "1.4.196"
-
 group = "com.ktor.finance"
 version = "0.0.1"
 
@@ -39,24 +35,36 @@ shadowJar.apply {
   classifier = ""
 }
 
+val ktorVersion = "1.0.0"
+val exposedVersion = "0.11.2"
+val h2Version = "1.4.196"
+val logbackVersion = "1.2.3"
+val jupiterVersion = "5.2.0"
+val assertJVersion = "3.10.0"
+val restAssuredVersion = "3.1.0"
+
 dependencies {
   implementation(kotlin("stdlib-jdk8"))
 
-  implementation("io.ktor:ktor-server-netty:$ktor_version")
-  implementation("io.ktor:ktor-jackson:$ktor_version")
-  implementation("io.ktor:ktor-websockets:$ktor_version")
-  implementation("io.ktor:ktor-auth-jwt:$ktor_version")
+  /*Ktor*/
+  implementation("io.ktor:ktor-server-netty:$ktorVersion")
+  implementation("io.ktor:ktor-jackson:$ktorVersion")
+  implementation("io.ktor:ktor-websockets:$ktorVersion")
+  implementation("io.ktor:ktor-auth-jwt:$ktorVersion")
 
-  implementation("com.h2database:h2:$h2_version")
-  implementation("org.jetbrains.exposed:exposed:$exposed_version")
+  /*DB Layer*/
+  implementation("com.h2database:h2:$h2Version")
+  implementation("org.jetbrains.exposed:exposed:$exposedVersion")
   implementation("com.zaxxer:HikariCP:3.2.0")
 
-  implementation("ch.qos.logback:logback-classic:1.2.3")
+  /*Logging*/
+  implementation("ch.qos.logback:logback-classic:$logbackVersion")
 
-  testImplementation("io.ktor:ktor-server-test-host:$ktor_version")
-  testImplementation("org.junit.jupiter:junit-jupiter-api:5.2.0")
-  testImplementation("org.assertj:assertj-core:3.10.0")
-  testImplementation("io.rest-assured:rest-assured:3.1.0")
+  /*Test*/
+  testImplementation("io.ktor:ktor-server-test-host:$ktorVersion")
+  testImplementation("org.junit.jupiter:junit-jupiter-api:$jupiterVersion")
+  testImplementation("org.assertj:assertj-core:$assertJVersion")
+  testImplementation("io.rest-assured:rest-assured:$restAssuredVersion")
   testImplementation(group = "junit", name = "junit", version = "4.12")
 }
 
