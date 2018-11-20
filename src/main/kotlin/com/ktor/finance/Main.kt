@@ -19,7 +19,6 @@ import io.ktor.server.netty.Netty
 import io.ktor.websocket.WebSockets
 
 fun Application.module() {
-  Log().debug("Starting BitChat Server!")
   install(CallLogging)
   install(DefaultHeaders)
   install(WebSockets)
@@ -33,6 +32,5 @@ fun Application.module() {
 
 fun main(args: Array<String>) {
   Log().debug("Starting server ...")
-  val server = embeddedServer(Netty, 9596, module = Application::module).start(wait = true)
-  server.start(true)
+  embeddedServer(Netty, 9596, module = Application::module).start(wait = true)
 }
