@@ -44,7 +44,7 @@ fun Route.users(userService: UserApi) {
       else call.respond(HttpStatusCode.NotFound)
     }
   }
-  webSocket("/userupdates") {
+  webSocket("/users/updates") {
     try {
       userService.addChangeListener(this.hashCode()) {
         outgoing.send(Frame.Text(mapper.writeValueAsString(it)))
@@ -86,7 +86,7 @@ fun Route.messages(messageService: MessageApi) {
     }
   }
 
-  webSocket("/messageupdates") {
+  webSocket("/messages/updates") {
     try {
       messageService.addChangeListener(this.hashCode()) {
         outgoing.send(Frame.Text(mapper.writeValueAsString(it)))

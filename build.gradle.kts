@@ -13,6 +13,7 @@ repositories {
 }
 
 plugins {
+  java
   application
   kotlin("jvm") version "1.3.10"
   id("com.github.johnrengelman.shadow") version "4.0.2"
