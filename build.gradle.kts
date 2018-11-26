@@ -4,36 +4,35 @@ import org.jetbrains.kotlin.gradle.dsl.Coroutines
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 repositories {
-  mavenCentral()
-  jcenter()
-  maven { url = uri("https://dl.bintray.com/kotlin/kotlinx") }
-  maven { url = uri("https://dl.bintray.com/kotlin/ktor") }
-  maven { url = uri("https://dl.bintray.com/kotlin/exposed") }
-  maven { url = uri("https://plugins.gradle.org/m2/") }
+    mavenCentral()
+    jcenter()
+    maven { url = uri("https://dl.bintray.com/kotlin/kotlinx") }
+    maven { url = uri("https://dl.bintray.com/kotlin/ktor") }
+    maven { url = uri("https://dl.bintray.com/kotlin/exposed") }
+    maven { url = uri("https://plugins.gradle.org/m2/") }
 }
 
 plugins {
-  java
-  application
-  kotlin("jvm") version "1.3.10"
-  id("com.github.johnrengelman.shadow") version "4.0.2"
+    java
+    application
+    kotlin("jvm") version "1.3.10"
+    id("com.github.johnrengelman.shadow") version "4.0.2"
 }
 
+configure<JavaPluginConvention> { sourceCompatibility = JavaVersion.VERSION_1_8 }
 tasks.withType<KotlinCompile> { kotlinOptions.jvmTarget = "1.8" }
 
 group = "com.ktor.finance"
 version = "0.0.1"
 
-application {
-  mainClassName = "com.ktor.finance.MainKt"
-}
+application { mainClassName = "com.ktor.finance.MainKt" }
 
 /* jar packaging */
 val shadowJar: ShadowJar by tasks
 shadowJar.apply {
-  baseName = "ktorfinance"
-  classifier = ""
-  version = ""
+    baseName = "ktorfinance"
+    classifier = ""
+    version = ""
 }
 
 val ktorVersion = "1.0.0"
@@ -45,27 +44,27 @@ val assertJVersion = "3.10.0"
 val restAssuredVersion = "3.1.0"
 
 dependencies {
-  implementation(kotlin("stdlib-jdk8"))
+    implementation(kotlin("stdlib-jdk8"))
 
-  /*Ktor*/
-  implementation("io.ktor:ktor-server-netty:$ktorVersion")
-  implementation("io.ktor:ktor-jackson:$ktorVersion")
-  implementation("io.ktor:ktor-websockets:$ktorVersion")
-  implementation("io.ktor:ktor-auth-jwt:$ktorVersion")
+    /*Ktor*/
+    implementation("io.ktor:ktor-server-netty:$ktorVersion")
+    implementation("io.ktor:ktor-jackson:$ktorVersion")
+    implementation("io.ktor:ktor-websockets:$ktorVersion")
+    implementation("io.ktor:ktor-auth-jwt:$ktorVersion")
 
-  /*DB Layer*/
-  implementation("com.h2database:h2:$h2Version")
-  implementation("org.jetbrains.exposed:exposed:$exposedVersion")
-  implementation("com.zaxxer:HikariCP:3.2.0")
+    /*DB Layer*/
+    implementation("com.h2database:h2:$h2Version")
+    implementation("org.jetbrains.exposed:exposed:$exposedVersion")
+    implementation("com.zaxxer:HikariCP:3.2.0")
 
-  /*Logging*/
-  implementation("ch.qos.logback:logback-classic:$logbackVersion")
+    /*Logging*/
+    implementation("ch.qos.logback:logback-classic:$logbackVersion")
 
-  /*Test*/
-  testImplementation("io.ktor:ktor-server-test-host:$ktorVersion")
-  testImplementation("org.junit.jupiter:junit-jupiter-api:$jupiterVersion")
-  testImplementation("org.assertj:assertj-core:$assertJVersion")
-  testImplementation("io.rest-assured:rest-assured:$restAssuredVersion")
-  testImplementation(group = "junit", name = "junit", version = "4.12")
+    /*Test*/
+    testImplementation("io.ktor:ktor-server-test-host:$ktorVersion")
+    testImplementation("org.junit.jupiter:junit-jupiter-api:$jupiterVersion")
+    testImplementation("org.assertj:assertj-core:$assertJVersion")
+    testImplementation("io.rest-assured:rest-assured:$restAssuredVersion")
+    testImplementation(group = "junit", name = "junit", version = "4.12")
 }
 
