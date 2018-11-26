@@ -11,25 +11,25 @@ import org.jetbrains.exposed.sql.addLogger
 import org.jetbrains.exposed.sql.transactions.transaction
 
 fun initExposedDb() {
-  Log().debug("Connecting to DB...")
-  Database.connect(hikari).also {
-    transaction {
-      addLogger(StdOutSqlLogger)
+    Log().debug("Connecting to DB...")
+    Database.connect(hikari).also {
+        transaction {
+            addLogger(StdOutSqlLogger)
+        }
     }
-  }
 }
 
 private val hikari by lazy(LazyThreadSafetyMode.NONE) {
-  HikariDataSource(HikariConfig().apply {
-    driverClassName = "org.h2.Driver"
-    jdbcUrl = "jdbc:h2:mem:test"
-    maximumPoolSize = 3
-    isAutoCommit = false
-    transactionIsolation = "TRANSACTION_REPEATABLE_READ"
-    validate()
-  })
+    HikariDataSource(HikariConfig().apply {
+        driverClassName = "org.h2.Driver"
+        jdbcUrl = "jdbc:h2:mem:test"
+        maximumPoolSize = 3
+        isAutoCommit = false
+        transactionIsolation = "TRANSACTION_REPEATABLE_READ"
+        validate()
+    })
 }
 
 suspend fun <T> dbQuery(block: () -> T): T = coroutineScope {
-  async(Dispatchers.IO) { transaction { block() } }.await()
+    async(Dispatchers.IO) { transaction { block() } }.await()
 }

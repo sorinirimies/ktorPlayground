@@ -9,5 +9,5 @@ object Users : Table() {
     val dateUpdated = long("dateUpdated")
 }
 
-data class User(val id: Int?, val name: String, val email: String, val dateUpdated: Long )
+data class User(val id: Int?, val name: String, val email: String, val dateUpdated: Long)
 

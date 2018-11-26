@@ -17,15 +17,15 @@ import io.ktor.server.netty.EngineMain
 import io.ktor.websocket.WebSockets
 
 fun Application.module() {
-  install(CallLogging)
-  install(DefaultHeaders)
-  install(WebSockets)
-  install(ContentNegotiation) { jackson { configure(SerializationFeature.INDENT_OUTPUT, true) } }
-  install(Routing) {
-    users(UserService())
-    messages(MessageService())
-  }
-  initExposedDb()
+    install(CallLogging)
+    install(DefaultHeaders)
+    install(WebSockets)
+    install(ContentNegotiation) { jackson { configure(SerializationFeature.INDENT_OUTPUT, true) } }
+    install(Routing) {
+        users(UserService())
+        messages(MessageService())
+    }
+    initExposedDb()
 }
 
 fun main(args: Array<String>): Unit = EngineMain.main(args)
